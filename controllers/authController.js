@@ -2,6 +2,9 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+
+
+
 // Register
 exports.register = async (req, res) => {
     try {
@@ -15,7 +18,7 @@ exports.register = async (req, res) => {
         res.status(500).json({ error: "Kullanıcı kaydı başarısız." });
     }
 };
-
+// Login
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
