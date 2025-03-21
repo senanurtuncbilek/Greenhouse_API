@@ -1,4 +1,5 @@
 const Greenhouse = require("../models/GreenHouse");
+const User = require("../models/User");
 
 exports.createGreenhouse = async (req, res) => {
     try {
@@ -16,7 +17,13 @@ exports.createGreenhouse = async (req, res) => {
 exports.getAllGreenhouses = async (req, res) => {
     try {
         const userId = req.user.id;
-        const greenhouses = await Greenhouse.findAll({ where: { userId } });
+        const greenhouses = await Greenhouse.findAll({ 
+            where: { userId },
+            include: {
+                model: User,
+                attributes: ["id", "name", "email"]
+            }
+         });
 
         res.json({ message: "Seralar listelendi.", greenhouses });
     } catch (error) {
@@ -64,5 +71,22 @@ exports.deleteGreenhouse = async (req, res) => {
         res.json({ message: "Sera başarıyla silindi." });
     } catch (error) {
         res.status(500).json({ error: "Sera silinemedi." });
+    }
+};
+
+
+
+exports.getGreenhouseById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const greenhouse = await Greenhouse.findOne({ where: { id } });
+
+        if (!greenhouse) {
+            return res.status(404).json({ error: "Sera bulunamadı!" });
+        }
+
+        res.json({ message: "Sera bilgisi getirildi.", greenhouse });
+    } catch (error) {
+        res.status(500).json({ error: "Sera bilgisi alınamadı!" });
     }
 };

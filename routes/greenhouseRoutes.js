@@ -15,4 +15,7 @@ router.put("/:id", authMiddleware.verifyToken, greenhouseController.updateGreenh
 // Sil 
 router.delete("/:id", authMiddleware.verifyToken, greenhouseController.deleteGreenhouse);
 
+// Serayı ID ile görüntüle
+router.get("/:id", authMiddleware.verifyToken, greenhouseController.getGreenhouseById);
+
 module.exports = router;
